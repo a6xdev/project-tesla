@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwb03kbokt1ns"]
+
+[ext_resource type="Script" path="res://scritps/gameplay/actors/vehicle/obj_vehicle.gd" id="1_q38ej"]
+[ext_resource type="Texture2D" uid="uid://cum26wy0amw0a" path="res://icon.svg" id="1_rrj8u"]
+[ext_resource type="PackedScene" uid="uid://by3wtepow8s1w" path="res://scenes/prefabs/projectile/bullet.tscn" id="2_36e5m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_72k78"]
+size = Vector2(127, 65)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qecbw"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="obj_vehicle" type="CharacterBody2D" node_paths=PackedStringArray("muzzle") groups=["GroupVehicle"]]
+script = ExtResource("1_q38ej")
+bullet = ExtResource("2_36e5m")
+muzzle = NodePath("muzzle")
+
+[node name="sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -1.5)
+scale = Vector2(1, 0.507813)
+texture = ExtResource("1_rrj8u")
+
+[node name="front" type="Sprite2D" parent="."]
+position = Vector2(47, -2)
+scale = Vector2(0.265625, 0.546875)
+texture = ExtResource("1_rrj8u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -1.5)
+shape = SubResource("RectangleShape2D_72k78")
+
+[node name="camera" type="Camera2D" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_qecbw")
+
+[node name="muzzle" type="Marker2D" parent="."]
+
+[node name="PlayerTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="PlayerTimer" to="." method="_PlayerEnter_timeout"]

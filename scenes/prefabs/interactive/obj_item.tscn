@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://csr5ld5ko0xf4"]
+
+[ext_resource type="Script" path="res://scritps/gameplay/interactive/obj_item.gd" id="1_s0m51"]
+[ext_resource type="Texture2D" uid="uid://cum26wy0amw0a" path="res://icon.svg" id="1_sallt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vsx4"]
+size = Vector2(12, 12)
+
+[node name="obj_item" type="Area2D"]
+script = ExtResource("1_s0m51")
+item_texture = ExtResource("1_sallt")
+
+[node name="texture" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_sallt")
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5vsx4")
+
+[node name="item_name" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

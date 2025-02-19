@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj82h8p52l1tb"]
+
+[ext_resource type="Script" path="res://scritps/interface/Inventory/stats.gd" id="1_bhrpy"]
+[ext_resource type="Script" path="res://scritps/interface/Inventory/Slot.gd" id="1_eb0qy"]
+
+[node name="Slot" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_eb0qy")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+expand_mode = 1
+script = ExtResource("1_bhrpy")
+
+[node name="debug" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2

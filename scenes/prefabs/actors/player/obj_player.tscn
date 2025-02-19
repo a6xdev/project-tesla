@@ -1,0 +1,185 @@
+[gd_scene load_steps=13 format=3 uid="uid://8jcathxi3mgy"]
+
+[ext_resource type="Script" path="res://scritps/gameplay/actors/player/obj_player.gd" id="1_rbul2"]
+[ext_resource type="Texture2D" uid="uid://cmlooberwsut2" path="res://assets/sprites/actors/players/Edengard-sprite-idle.png" id="1_xyikr"]
+[ext_resource type="PackedScene" uid="uid://j0lvf3aofq06" path="res://scenes/interface/Inventory/Inventory.tscn" id="2_2ki5a"]
+[ext_resource type="Script" path="res://scritps/gameplay/actors/player/interface/interface.gd" id="2_5jg7c"]
+[ext_resource type="Script" path="res://scritps/gameplay/actors/player/systems/firearm_system.gd" id="3_1p3s4"]
+[ext_resource type="PackedScene" uid="uid://by3wtepow8s1w" path="res://scenes/prefabs/projectile/bullet.tscn" id="4_1d1e0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_axexe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xyikr")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rkj36"]
+size = Vector2(44, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o3hmq"]
+radius = 40.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lkxre"]
+size = Vector2(44, 61)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_86p2x"]
+properties/0/path = NodePath("..:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("..:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("..:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("../collision:disabled")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("../sprite:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("../sprite:modulate")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("../PlayerUI/VBoxContainer/health:text")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("../PlayerUI/VBoxContainer/level:text")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_dxu4b"]
+font_size = 60
+
+[node name="obj_player" type="CharacterBody2D"]
+script = ExtResource("1_rbul2")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+rotation = 1.57079
+sprite_frames = SubResource("SpriteFrames_axexe")
+animation = &"idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="sprite"]
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(-4, 8.88505e-06)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_rkj36")
+
+[node name="camera" type="Camera2D" parent="."]
+enabled = false
+
+[node name="muzzle" type="Marker2D" parent="."]
+position = Vector2(10, 1)
+
+[node name="InteractionArea" type="Area2D" parent="."]
+rotation = 1.57079
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_o3hmq")
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(20, 0)
+rotation = 1.57079
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(0, -20.5)
+shape = SubResource("RectangleShape2D_lkxre")
+
+[node name="systems" type="Node" parent="."]
+
+[node name="FirearmSystem" type="Node" parent="systems" node_paths=PackedStringArray("player", "muzzle")]
+script = ExtResource("3_1p3s4")
+player = NodePath("../..")
+bullet = ExtResource("4_1d1e0")
+muzzle = NodePath("../../muzzle")
+
+[node name="Multiplayer" type="Node" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Multiplayer"]
+replication_config = SubResource("SceneReplicationConfig_86p2x")
+
+[node name="Interface" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("2_5jg7c")
+
+[node name="Inventory" parent="Interface" instance=ExtResource("2_2ki5a")]
+visible = false
+
+[node name="RespawnScreen" type="Control" parent="Interface"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="ColorRect" parent="Interface/RespawnScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0189402, 0.0189402, 0.0189402, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="Interface/RespawnScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/RespawnScreen/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="title" type="Label" parent="Interface/RespawnScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "YOU DIED"
+label_settings = SubResource("LabelSettings_dxu4b")
+
+[node name="respawn" type="Button" parent="Interface/RespawnScreen/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RESPAWN"
+
+[node name="PlayerUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI"]
+layout_mode = 0
+offset_left = -22.0
+offset_top = -72.0
+offset_right = 18.0
+offset_bottom = -22.0
+alignment = 1
+
+[node name="health" type="Label" parent="PlayerUI/VBoxContainer"]
+layout_mode = 2
+text = "000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="level" type="Label" parent="PlayerUI/VBoxContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_InteractionArea_entered"]
+[connection signal="area_exited" from="InteractionArea" to="." method="_InteractionArea_exited"]
+[connection signal="body_entered" from="InteractionArea" to="." method="_interactionBody_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_interactionBody_exited"]
+[connection signal="pressed" from="Interface/RespawnScreen/CenterContainer/VBoxContainer/respawn" to="Interface" method="_respawn_pressed"]

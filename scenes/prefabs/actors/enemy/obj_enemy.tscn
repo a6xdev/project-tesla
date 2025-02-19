@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://bi2l0kejqye7f"]
+
+[ext_resource type="Script" path="res://scritps/gameplay/actors/enemy/obj_enemy.gd" id="1_6ur7g"]
+[ext_resource type="Texture2D" uid="uid://coq5jmj4q3vw4" path="res://assets/sprites/MinionIcon.png" id="1_h3rs7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25hkv"]
+size = Vector2(12, 8)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0cpqv"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gb837"]
+radius = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qfv12"]
+radius = 15.0
+
+[node name="obj_enemy" type="CharacterBody2D"]
+script = ExtResource("1_6ur7g")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_h3rs7")
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_25hkv")
+
+[node name="PatrolTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_0cpqv")
+
+[node name="health" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DetectPlayer" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectPlayer"]
+shape = SubResource("CircleShape2D_gb837")
+
+[node name="AttackPlayer" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackPlayer"]
+shape = SubResource("CircleShape2D_qfv12")
+
+[connection signal="timeout" from="PatrolTimer" to="." method="_patrol_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_attack_timeout"]
+[connection signal="body_entered" from="DetectPlayer" to="." method="_detect_player_entered"]
+[connection signal="body_entered" from="AttackPlayer" to="." method="_attack_entered"]
+[connection signal="body_exited" from="AttackPlayer" to="." method="_attack_exited"]

@@ -1,0 +1,165 @@
+[gd_scene load_steps=6 format=3 uid="uid://j0lvf3aofq06"]
+
+[ext_resource type="PackedScene" uid="uid://cj82h8p52l1tb" path="res://scenes/interface/Inventory/Slot.tscn" id="1_cqhks"]
+[ext_resource type="Script" path="res://scritps/interface/Inventory/Inventory.gd" id="1_r17ji"]
+[ext_resource type="PackedScene" uid="uid://bu3j5max71fil" path="res://scenes/interface/Inventory/PassiveSlot.tscn" id="2_5isc0"]
+[ext_resource type="PackedScene" uid="uid://dmd552nt0n4m2" path="res://scenes/interface/Inventory/DropSlot.tscn" id="2_ggotx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m8twc"]
+font_size = 13
+
+[node name="Inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r17ji")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0313726, 0.0313726, 0.0313726, 0.294118)
+
+[node name="InventoryGrid" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -64.0
+offset_right = 146.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="Slot" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot2" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot3" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot4" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot5" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot6" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot7" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot8" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot9" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot10" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="Slot11" parent="InventoryGrid" instance=ExtResource("1_cqhks")]
+layout_mode = 2
+
+[node name="DropSlot" parent="InventoryGrid" instance=ExtResource("2_ggotx")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InventoryGrid/DropSlot"]
+layout_mode = 2
+text = "DROP"
+label_settings = SubResource("LabelSettings_m8twc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="character" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -94.0
+offset_right = -66.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="head" parent="character" instance=ExtResource("2_5isc0")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+grow_horizontal = 2
+slot_type = 1
+
+[node name="Label" type="Label" parent="character/head"]
+layout_mode = 2
+text = "HEAD"
+horizontal_alignment = 1
+
+[node name="body" parent="character" instance=ExtResource("2_5isc0")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -20.0
+offset_right = 22.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+slot_type = 2
+
+[node name="Label" type="Label" parent="character/body"]
+layout_mode = 2
+text = "BODY"
+horizontal_alignment = 1
+
+[node name="leg" parent="character" instance=ExtResource("2_5isc0")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -40.0
+offset_right = 22.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
+slot_type = 3
+
+[node name="Label" type="Label" parent="character/leg"]
+layout_mode = 2
+text = "LEG"
+horizontal_alignment = 1
+
+[node name="active" parent="character" instance=ExtResource("2_5isc0")]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 44.0
+offset_bottom = 20.0
+grow_vertical = 2
+slot_type = 4

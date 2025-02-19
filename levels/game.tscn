@@ -1,0 +1,248 @@
+[gd_scene load_steps=12 format=3 uid="uid://gt3inpafi1ht"]
+
+[ext_resource type="Script" path="res://scritps/core/multiplayer/LobbyManager.gd" id="1_p16a2"]
+[ext_resource type="Script" path="res://scritps/interface/Menu/EditPlayerScreen.gd" id="2_6j50v"]
+[ext_resource type="PackedScene" uid="uid://8jcathxi3mgy" path="res://scenes/prefabs/actors/player/obj_player.tscn" id="2_qj7ns"]
+[ext_resource type="Script" path="res://scritps/interface/Menu/GameInterface.gd" id="2_sjmam"]
+[ext_resource type="PackedScene" uid="uid://dwb03kbokt1ns" path="res://scenes/prefabs/actors/vehicle/obj_vehicle.tscn" id="5_6gqdj"]
+[ext_resource type="Script" path="res://scritps/core/systems/EnemySpawner.gd" id="6_6usft"]
+[ext_resource type="PackedScene" uid="uid://bi2l0kejqye7f" path="res://scenes/prefabs/actors/enemy/obj_enemy.tscn" id="6_c6n5w"]
+[ext_resource type="PackedScene" uid="uid://bdrsimj4gx1jc" path="res://scenes/prefabs/interactive/firearm_item.tscn" id="6_e61ti"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1rxx3"]
+properties/0/path = NodePath("Interface/GameInterface:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_cvqpw"]
+font_size = 47
+
+[sub_resource type="LabelSettings" id="LabelSettings_l8sfo"]
+font_size = 116
+
+[node name="Game" type="Node2D"]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../GameNodes/Player")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1rxx3")
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="LobbyManager" type="Node" parent="Systems" node_paths=PackedStringArray("lobby_screen", "options", "start", "players_count", "players_node_ref")]
+script = ExtResource("1_p16a2")
+lobby_screen = NodePath("../../Interface/GameInterface")
+options = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/options")
+start = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/start")
+players_count = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/players_counter")
+players_node_ref = NodePath("../../GameNodes/Player")
+IP_ADDRESS = "localhost"
+player_scene = ExtResource("2_qj7ns")
+
+[node name="Interface" type="Node" parent="."]
+
+[node name="GameInterface" type="CanvasLayer" parent="Interface"]
+script = ExtResource("2_sjmam")
+
+[node name="background" type="ColorRect" parent="Interface/GameInterface"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.059126, 0.0591259, 0.0591259, 1)
+
+[node name="GameMenu" type="Control" parent="Interface/GameInterface"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Interface/GameInterface/GameMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/GameInterface/GameMenu/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 36
+
+[node name="title" type="Label" parent="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Planet Escape Online"
+label_settings = SubResource("LabelSettings_cvqpw")
+
+[node name="options" type="VBoxContainer" parent="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="play" type="Button" parent="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options"]
+layout_mode = 2
+text = "PLAY"
+
+[node name="edit_player" type="Button" parent="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options"]
+layout_mode = 2
+text = "EDIT PLAYER"
+
+[node name="LobbyScreen" type="Control" parent="Interface/GameInterface"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Interface/GameInterface/LobbyScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="main" type="VBoxContainer" parent="Interface/GameInterface/LobbyScreen/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="title" type="Label" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
+layout_mode = 2
+text = "Lobby"
+label_settings = SubResource("LabelSettings_l8sfo")
+
+[node name="options" type="VBoxContainer" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="host" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
+layout_mode = 2
+text = "HOST"
+
+[node name="join" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
+layout_mode = 2
+text = "JOIN"
+
+[node name="exit" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
+layout_mode = 2
+text = "EXIT"
+
+[node name="players_counter" type="Label" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
+layout_mode = 2
+text = "Players: 0/4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "START"
+
+[node name="EditPlayerScreen" type="Control" parent="Interface/GameInterface"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_6j50v")
+
+[node name="CenterContainer" type="CenterContainer" parent="Interface/GameInterface/EditPlayerScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="name" type="HBoxContainer" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="name_label" type="Label" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/name"]
+layout_mode = 2
+text = "NAME:"
+
+[node name="TextEdit" type="TextEdit" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/name"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+placeholder_text = "Player"
+indent_wrapped_lines = true
+use_default_word_separators = false
+
+[node name="gender" type="HBoxContainer" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="name_label" type="Label" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/gender"]
+layout_mode = 2
+text = "NAME:"
+
+[node name="OptionButton" type="OptionButton" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/gender"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Masculine"
+popup/item_1/text = "Feminine"
+popup/item_1/id = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="save" type="Button" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "SAVE"
+
+[node name="exit" type="Button" parent="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "EXIT"
+
+[node name="GameNodes" type="Node" parent="."]
+
+[node name="Vehicles" type="Node" parent="GameNodes"]
+
+[node name="obj_vehicle" parent="GameNodes/Vehicles" instance=ExtResource("5_6gqdj")]
+position = Vector2(-4, -70)
+
+[node name="Items" type="Node" parent="GameNodes"]
+
+[node name="firearm_item" parent="GameNodes/Items" instance=ExtResource("6_e61ti")]
+position = Vector2(-51, 51)
+
+[node name="Map" type="Node" parent="GameNodes"]
+
+[node name="Enemies" type="Node" parent="GameNodes"]
+
+[node name="EnemySpawner" type="Marker2D" parent="GameNodes/Enemies" node_paths=PackedStringArray("LobbyManager")]
+position = Vector2(-126, 490)
+script = ExtResource("6_6usft")
+LobbyManager = NodePath("../../../Systems/LobbyManager")
+enemy_scene = ExtResource("6_c6n5w")
+active = true
+
+[node name="Player" type="Node" parent="GameNodes"]
+
+[connection signal="pressed" from="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options/play" to="Interface/GameInterface" method="_on_play_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options/edit_player" to="Interface/GameInterface" method="_on_EditPlayer_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/host" to="Systems/LobbyManager" method="host_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/join" to="Systems/LobbyManager" method="join_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/exit" to="Interface/GameInterface" method="_on_exit_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/start" to="Systems/LobbyManager" method="start_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2/save" to="Interface/GameInterface/EditPlayerScreen" method="_on_save_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2/exit" to="Interface/GameInterface" method="_on_exit_pressed"]

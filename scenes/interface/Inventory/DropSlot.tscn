@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmd552nt0n4m2"]
+
+[ext_resource type="Script" path="res://scritps/interface/Inventory/DropSlot.gd" id="1_4ewyf"]
+[ext_resource type="Script" path="res://scritps/interface/Inventory/stats.gd" id="2_ia4t7"]
+
+[node name="DropSlot" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_4ewyf")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+expand_mode = 1
+script = ExtResource("2_ia4t7")
+
+[node name="debug" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
