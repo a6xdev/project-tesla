@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://b177msy1bvkqs"]
+
+[ext_resource type="Script" path="res://scritps/gameplay/interactive/obj_item.gd" id="1_03of7"]
+[ext_resource type="Texture2D" uid="uid://cum26wy0amw0a" path="res://icon.svg" id="2_fca2g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vsx4"]
+size = Vector2(12, 12)
+
+[node name="armor_item" type="Area2D"]
+script = ExtResource("1_03of7")
+item_name = "Armor"
+item_type = 4
+item_texture = ExtResource("2_fca2g")
+stats = {
+"DEF": 10,
+"DURABILITY": 0,
+"GUN_DAMAGE": 0,
+"HEALTH": 0,
+"MELEE_ATTACK": 0,
+"STRENGHT": 0
+}
+
+[node name="texture" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_fca2g")
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5vsx4")
+
+[node name="item_name" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

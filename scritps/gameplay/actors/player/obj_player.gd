@@ -60,6 +60,9 @@ var CurrentVehicle:CharacterBody2D = null
 var MeleeDamage:int = 15
 var AttackDuration:float = 0.5
 
+# Defense
+var ArmorFactor: float = 0.0
+
 # Others
 var CurrentHealth:int = 100
 var DeathCount:int = 0
@@ -102,7 +105,8 @@ func _physics_process(_delta: float) -> void:
 			InterfaceController()
 			MovementController()
 			AttackController()
-			#DEBUG()
+			UpdateArmorFactor()
+			DEBUG()
 			
 			PlayerCustomization()
 			InteractSystem()
@@ -152,11 +156,19 @@ func PlayerCustomization():
 
 func SetDamage(damage:int) -> void:
 	if multiplayer.is_server() or multiplayer.get_unique_id() == get_multiplayer_authority():
-		CurrentHealth -= damage
+		var reduced_damage = damage * (1.0 - ArmorFactor)
+		CurrentHealth -= reduced_damage
 		
 		if CurrentHealth <= 0:
 			IsDead = true
 			DeathCount += 1
+
+func UpdateArmorFactor():
+	ArmorFactor = 0.0
+	for slot in $Interface/Inventory/character.get_children():
+		if slot.stored_item:
+			ArmorFactor += slot.stored_item["STATS"].get("DEF", 0) / 100.0
+	ArmorFactor = clamp(ArmorFactor, 0.0, 1.0)
 
 func ExperienceSystem(XP:int) -> void:
 	if multiplayer.is_server() or multiplayer.get_unique_id() == get_multiplayer_authority():
@@ -200,17 +212,12 @@ func RespawnPlayer():
 func setInVehicle(state: bool):
 	IsInVehicle = state
 
-
 # =========================================================
 # OTHERS
 # =========================================================
 
 func DEBUG() -> void:
-	$MainInterface/Label.text = str(IsInVehicle)
-	if CurrentVehicle:
-		print("Vehicle: ", Vehicle)
-		print("IsInVehicle: ", IsInVehicle)
-		print("CurrentVehicle: ", CurrentVehicle)
+	$Label.text = str(ArmorFactor)
 	pass
 
 # =========================================================

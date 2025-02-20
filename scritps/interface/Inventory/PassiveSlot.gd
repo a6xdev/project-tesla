@@ -8,6 +8,9 @@ func _physics_process(delta: float) -> void:
 		inventory.player.CanShoot = true
 	else:
 		inventory.player.CanShoot = false
+		
+	#if stored_item.get("SLOT_TYPE") == 1:
+		#inventory.player.DefenseValue = stored_item["STATS"].get("DEF")
 
 func _can_drop_data(_pos, data):
 	return data is Dictionary and data.get("SLOT_TYPE") == slot_type
