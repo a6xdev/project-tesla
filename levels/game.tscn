@@ -225,6 +225,14 @@ position = Vector2(-161, -107)
 
 [node name="firearm_item" parent="GameNodes/Items" instance=ExtResource("6_e61ti")]
 position = Vector2(38, 89)
+stats = {
+"DEF": 0,
+"GUN_DAMAGE": 50,
+"HEALTH": 0,
+"MAX_DURABILITY": 100,
+"MELEE_ATTACK": 0,
+"STRENGHT": 0
+}
 
 [node name="head" parent="GameNodes/Items" instance=ExtResource("7_q7ydd")]
 position = Vector2(89, 38)

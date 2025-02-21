@@ -26,7 +26,7 @@ enum ItemType {
 	"MELEE_ATTACK": 0,  ## Weapon damage ( for melee )
 	"GUN_DAMAGE": 0, ## Gun Damage
 	"DEF": 0,  ## Defense of an armor
-	"DURABILITY": 0,  ## Equipment durability
+	"MAX_DURABILITY": 0,  ## Equipment durability
 	"HEALTH": 0 ## Recover health
 }
 

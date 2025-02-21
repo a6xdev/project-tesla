@@ -4,9 +4,9 @@ class_name Bullet
 @onready var destroy_timer = $DestroyTimer
 
 @export var speed: float = 1000
-@export var damage:int = 10
 @export var direction: Vector2 = Vector2.RIGHT
 
+var damage:int = 10
 var shooter
 var in_vehicle:bool = false
 

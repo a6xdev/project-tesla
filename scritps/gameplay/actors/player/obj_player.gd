@@ -8,6 +8,7 @@ class_name Player
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var collision: CollisionShape2D = $collision
 @onready var camera: Camera2D = $camera
+@onready var animation_player: AnimationPlayer = $sprite/AnimationPlayer
 
 # Interface
 @onready var MainInterface: CanvasLayer = $Interface
@@ -105,9 +106,10 @@ func _physics_process(_delta: float) -> void:
 			InterfaceController()
 			MovementController()
 			AttackController()
-			UpdateArmorFactor()
+			AnimationController()
 			DEBUG()
 			
+			UpdateArmorFactor()
 			PlayerCustomization()
 			InteractSystem()
 		else:
@@ -125,6 +127,12 @@ func InterfaceController() -> void:
 	InInventory = InventoryNode.visible
 	health.text = str(CurrentHealth)
 	level.text = str(CurrentLevel)
+
+func AnimationController():
+	if velocity.length() > 0.1:
+		animation_player.play("walk")
+	else:
+		animation_player.play("idle")
 
 func MovementController():
 	if not InInventory and CanMove:
