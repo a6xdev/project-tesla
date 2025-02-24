@@ -225,7 +225,6 @@ func setInVehicle(state: bool):
 # =========================================================
 
 func DEBUG() -> void:
-	$Label.text = str(ArmorFactor)
 	pass
 
 # =========================================================
