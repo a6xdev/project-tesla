@@ -290,6 +290,7 @@ vertical_alignment = 1
 [connection signal="area_exited" from="InteractionArea" to="." method="_InteractionArea_exited"]
 [connection signal="body_entered" from="InteractionArea" to="." method="_interactionBody_entered"]
 [connection signal="body_exited" from="InteractionArea" to="." method="_interactionBody_exited"]
+[connection signal="body_entered" from="AttackArea" to="." method="_attackAreaBody_entered"]
 [connection signal="pressed" from="Interface/RespawnScreen/CenterContainer/VBoxContainer/respawn" to="Interface" method="_respawn_pressed"]
 
 [editable path="Interface/Inventory"]

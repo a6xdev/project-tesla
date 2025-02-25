@@ -144,11 +144,13 @@ func MovementController():
 
 func AttackController():
 	if Input.is_action_just_pressed("a_meleeAttack"):
+		print("oi1")
 		rpc("MeleeAttack", true)
 		IsAttacking = true
 		await get_tree().create_timer(AttackDuration).timeout
 		rpc("MeleeAttack", false)
 		IsAttacking = false
+		print("oi2")
 		
 # =========================================================
 # MECHANICS
@@ -246,6 +248,6 @@ func _interactionBody_exited(body: Node2D) -> void:
 		Vehicle = null
 
 # => MeleeAttack
-#func _attackAreaBody_entered(body: Node2D) -> void:
-	#if body is Enemy or body is Player:
-		#body.SetDamage(MeleeDamage)
+func _attackAreaBody_entered(body: Node2D) -> void:
+	if body is Enemy or body is Player:
+		body.SetDamage(MeleeDamage)
