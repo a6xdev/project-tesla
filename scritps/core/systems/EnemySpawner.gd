@@ -17,7 +17,7 @@ func _ready():
 			spawn_wave()
 
 func _physics_process(delta):
-	if LobbyManager.game_started and multiplayer.is_server() and active:
+	if LobbyManager.GameStarted and multiplayer.is_server() and active:
 		if enemies.is_empty() and not waiting_next_wave:
 			waiting_next_wave = true 
 			await get_tree().create_timer(wave_delay).timeout

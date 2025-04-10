@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://gt3inpafi1ht"]
+[gd_scene load_steps=12 format=3 uid="uid://gt3inpafi1ht"]
 
-[ext_resource type="Script" path="res://scritps/core/multiplayer/LobbyManager.gd" id="1_p16a2"]
+[ext_resource type="Script" path="res://scritps/core/multiplayer/LobbyManager.gd" id="1_6y06x"]
 [ext_resource type="Script" path="res://scritps/interface/Menu/EditPlayerScreen.gd" id="2_6j50v"]
 [ext_resource type="PackedScene" uid="uid://8jcathxi3mgy" path="res://scenes/prefabs/actors/player/obj_player.tscn" id="2_qj7ns"]
 [ext_resource type="Script" path="res://scritps/interface/Menu/GameInterface.gd" id="2_sjmam"]
@@ -18,9 +18,6 @@ properties/0/replication_mode = 1
 [sub_resource type="LabelSettings" id="LabelSettings_cvqpw"]
 font_size = 47
 
-[sub_resource type="LabelSettings" id="LabelSettings_l8sfo"]
-font_size = 116
-
 [node name="Game" type="Node2D"]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
@@ -31,20 +28,16 @@ replication_config = SubResource("SceneReplicationConfig_1rxx3")
 
 [node name="Systems" type="Node" parent="."]
 
-[node name="LobbyManager" type="Node" parent="Systems" node_paths=PackedStringArray("lobby_screen", "options", "start", "players_count", "players_node_ref")]
-script = ExtResource("1_p16a2")
-lobby_screen = NodePath("../../Interface/GameInterface")
-options = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/options")
-start = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/start")
-players_count = NodePath("../../Interface/GameInterface/LobbyScreen/CenterContainer/main/players_counter")
-players_node_ref = NodePath("../../GameNodes/Player")
-IP_ADDRESS = "localhost"
-player_scene = ExtResource("2_qj7ns")
+[node name="LobbyManager" type="Node" parent="Systems" node_paths=PackedStringArray("PlayersNode")]
+script = ExtResource("1_6y06x")
+PlayersNode = NodePath("../../GameNodes/Player")
+PlayerScene = ExtResource("2_qj7ns")
 
 [node name="Interface" type="Node" parent="."]
 
-[node name="GameInterface" type="CanvasLayer" parent="Interface"]
+[node name="GameInterface" type="CanvasLayer" parent="Interface" node_paths=PackedStringArray("LobbyManagerNode")]
 script = ExtResource("2_sjmam")
+LobbyManagerNode = NodePath("../../Systems/LobbyManager")
 
 [node name="background" type="ColorRect" parent="Interface/GameInterface"]
 anchors_preset = 15
@@ -115,11 +108,6 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_constants/separation = 60
 
-[node name="title" type="Label" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
-layout_mode = 2
-text = "Lobby"
-label_settings = SubResource("LabelSettings_l8sfo")
-
 [node name="options" type="VBoxContainer" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
@@ -127,9 +115,9 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="host" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
+[node name="create" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
 layout_mode = 2
-text = "HOST"
+text = "CREATE"
 
 [node name="join" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
 layout_mode = 2
@@ -138,18 +126,6 @@ text = "JOIN"
 [node name="exit" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main/options"]
 layout_mode = 2
 text = "EXIT"
-
-[node name="players_counter" type="Label" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
-layout_mode = 2
-text = "Players: 0/4"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="start" type="Button" parent="Interface/GameInterface/LobbyScreen/CenterContainer/main"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "START"
 
 [node name="EditPlayerScreen" type="Control" parent="Interface/GameInterface"]
 visible = false
@@ -253,9 +229,8 @@ active = true
 
 [connection signal="pressed" from="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options/play" to="Interface/GameInterface" method="_on_play_pressed"]
 [connection signal="pressed" from="Interface/GameInterface/GameMenu/CenterContainer/VBoxContainer/options/edit_player" to="Interface/GameInterface" method="_on_EditPlayer_pressed"]
-[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/host" to="Systems/LobbyManager" method="host_pressed"]
-[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/join" to="Systems/LobbyManager" method="join_pressed"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/create" to="Systems/LobbyManager" method="CreateServer"]
+[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/join" to="Systems/LobbyManager" method="JoinServer"]
 [connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/options/exit" to="Interface/GameInterface" method="_on_exit_pressed"]
-[connection signal="pressed" from="Interface/GameInterface/LobbyScreen/CenterContainer/main/start" to="Systems/LobbyManager" method="start_pressed"]
 [connection signal="pressed" from="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2/save" to="Interface/GameInterface/EditPlayerScreen" method="_on_save_pressed"]
 [connection signal="pressed" from="Interface/GameInterface/EditPlayerScreen/CenterContainer/VBoxContainer/VBoxContainer2/exit" to="Interface/GameInterface" method="_on_exit_pressed"]
